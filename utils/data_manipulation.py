@@ -146,3 +146,49 @@ def train_test_split(X: np.ndarray, y: np.ndarray, test_size: float = 0.5, shuff
     y_train, y_test = y[:split_index], y[split_index:]
 
     return X_train, X_test, y_train, y_test
+
+
+
+def standardize(X: np.ndarray) -> np.ndarray:
+    """
+    Standardizes the dataset by scaling each feature to have zero mean and unit variance.
+
+    Standardization is a common requirement for many machine learning estimators: they might behave badly
+    if the individual features do not more or less look like standard normally distributed data 
+    (e.g., Gaussian with 0 mean and unit variance).
+
+    Parameters:
+    -----------
+    X : np.ndarray
+        The dataset to be standardized, where each column represents a feature.
+
+    Returns:
+    --------
+    np.ndarray
+        The standardized dataset.
+    """
+    # Copy the dataset to avoid modifying the original data.
+    X_std = X.copy()
+
+    # Calculate the mean of each feature.
+    # X.mean(axis=0) computes the mean across rows (for each column).
+    mean = X.mean(axis=0)
+
+    # Calculate the standard deviation of each feature.
+    # X.std(axis=0) computes the standard deviation across rows (for each column).
+    std = X.std(axis=0)
+
+    # Standardize each feature.
+    # Loop over each feature (column) in the dataset.
+    for col in range(np.shape(X)[1]):
+        # Only standardize if the standard deviation is non-zero to avoid division by zero.
+        if std[col]:
+            # Subtract the mean and divide by the standard deviation for each feature.
+            # This transforms the feature to have zero mean and unit variance.
+            X_std[:, col] = (X_std[:, col] - mean[col]) / std[col]
+
+    # Alternative single line solution (commented out):
+    # This line achieves the same result as the above loop, but in a more concise manner.
+    # X_std = (X - X.mean(axis=0)) / X.std(axis=0)
+
+    return X_std

@@ -46,9 +46,36 @@ def euclidean_distance(x1, x2):
     return math.sqrt(distance)
 
 
-def accuracy_score(y_true, y_pred):
-    """ Compare y_true to y_pred and return the accuracy """
+def accuracy_score(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+    """
+    Calculates the accuracy of predictions made by a classification model.
+
+    Accuracy is defined as the proportion of correctly predicted observations to the total observations.
+    This function compares each predicted label (y_pred) with the corresponding true label (y_true) and
+    calculates the fraction of correct predictions.
+
+    Parameters:
+    -----------
+    y_true : np.ndarray
+        The true labels. An array of actual class labels.
+    y_pred : np.ndarray
+        The predicted labels. An array of class labels predicted by the model.
+
+    Returns:
+    --------
+    float
+        The accuracy of the predictions, ranging from 0 to 1.
+        A value of 1 means perfect accuracy, and 0 means no correct predictions.
+    """
+    # np.sum(y_true == y_pred, axis=0) counts the number of times the predicted label matches the true label.
+    # This is done element-wise: for each element in y_true and y_pred, it checks if they are equal.
+    # If they are equal (i.e., the prediction is correct), it counts as 1, otherwise as 0.
+
+    # The total count of correct predictions is then divided by the length of y_true (total number of observations).
+    # This division gives the proportion of correct predictions, which is the accuracy.
+    # The result is a float value between 0 and 1, where 1 indicates perfect accuracy.
     accuracy = np.sum(y_true == y_pred, axis=0) / len(y_true)
+
     return accuracy
 
 
